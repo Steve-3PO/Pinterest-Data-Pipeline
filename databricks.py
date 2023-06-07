@@ -1,4 +1,4 @@
-dbutils.fs.ls('/FileStore/tables')
+# dbutils.fs.ls('/FileStore/tables')
 
 # pyspark functions
 from pyspark.sql.functions import *
