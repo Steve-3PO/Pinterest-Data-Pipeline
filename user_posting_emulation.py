@@ -91,7 +91,7 @@ def run_infinite_post_data_loop():
             }, default=str)
             headers = {'Content-Type': 'application/vnd.kafka.json.v2+json'}
             response = requests.request("POST", invoke_url, headers=headers, data=payload)
-            #print(response.status_code)
+            print(response.status_code)
             
             # 12cc24ac7551.user
             invoke_url = "https://gw5okk6hgh.execute-api.us-east-1.amazonaws.com/test/topics/12cc24ac7551.user"
@@ -106,7 +106,7 @@ def run_infinite_post_data_loop():
             }, default=str)
             headers = {'Content-Type': 'application/vnd.kafka.json.v2+json'}
             response = requests.request("POST", invoke_url, headers=headers, data=payload)
-            #print(response.status_code)
+            print(response.status_code)
             
             
 
