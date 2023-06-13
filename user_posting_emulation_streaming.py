@@ -61,11 +61,10 @@ def run_infinite_post_data_loop():
             # print(user_result)
 
             
-            # pin_result
+            # Sending post data stream to the API
             # invoke url for one record, if you want to put more records replace record with records
             invoke_url = "https://gw5okk6hgh.execute-api.us-east-1.amazonaws.com/test/streams/streaming-12cc24ac7551-pin/record"
 
-            #To send JSON messages you need to follow this structure
             payload = json.dumps({
                 "stream-name": "YourStreamName",
                 "Data": {
@@ -81,16 +80,16 @@ def run_infinite_post_data_loop():
 
             headers = {'Content-Type': 'application/json'}
             response = requests.request("PUT", invoke_url, headers=headers, data=payload)
-            print(response.status_code)
-            print(response.text)
+            # print(response.status_code)
+            # print(response.text)
+
+
 
             
             
-            # geo_result
-            # invoke url for one record, if you want to put more records replace record with records
+            # Sending geolocation data stream to the API
             invoke_url = "https://gw5okk6hgh.execute-api.us-east-1.amazonaws.com/test/streams/streaming-12cc24ac7551-geo/record"
 
-            #To send JSON messages you need to follow this structure
             payload = json.dumps({
                 "StreamName": "YourStreamName",
                 "Data": {
@@ -102,15 +101,16 @@ def run_infinite_post_data_loop():
 
             headers = {'Content-Type': 'application/json'}
             response = requests.request("PUT", invoke_url, headers=headers, data=payload)
-            print(response.status_code)
-            print(response.text)
+            # print(response.status_code)
+            # print(response.text)
             
             
-            # user_result
-            # invoke url for one record, if you want to put more records replace record with records
+            
+            
+            
+            # Sending user data stream to the API
             invoke_url = "https://gw5okk6hgh.execute-api.us-east-1.amazonaws.com/test/streams/streaming-12cc24ac7551-user/record"
 
-            #To send JSON messages you need to follow this structure
             payload = json.dumps({
                 "StreamName": "YourStreamName",
                 "Data": {
@@ -122,10 +122,9 @@ def run_infinite_post_data_loop():
 
             headers = {'Content-Type': 'application/json'}
             response = requests.request("PUT", invoke_url, headers=headers, data=payload)
-            print(response.status_code)
-            print(response.text)
+            # print(response.status_code)
+            # print(response.text)
         
-
 
 if __name__ == "__main__":
     run_infinite_post_data_loop()

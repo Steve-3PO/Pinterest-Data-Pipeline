@@ -1,6 +1,6 @@
 # pyspark functions
 from pyspark.sql.types import StructType,StructField,IntegerType, TimestampType, FloatType
-from pyspark.sql.functions import col, from_json, isnull, unix_timestamp, *
+from pyspark.sql.functions import regexp_replace,col,when,udf, from_json, isnull, unix_timestamp, *
 # URL processing
 import urllib
 
@@ -22,12 +22,12 @@ SECRET_KEY = aws_keys_df.where(col('User name')=='databricks-user').select('Secr
 # Encode the secrete key
 ENCODED_SECRET_KEY = urllib.parse.quote(string=SECRET_KEY, safe="")
 
+
+
+# Reading in the Geolocation stream data
 kinesisGeo = spark.readStream.format("kinesis").option("streamName", "streaming-12cc24ac7551-geo").option("region", 'us-east-1').option("initialPosition", '{"at_timestamp": "2023/06/12 15:18:00 GMT", "format": "yyyy/MM/dd HH:mm:ss ZZZ"}').option("awsAccessKey", ACCESS_KEY).option("awsSecretKey", SECRET_KEY).load()
-#display(kinesisGeo)
 
-
-from pyspark.sql.types import StructType,StructField,IntegerType, TimestampType, FloatType,col, from_json, isnull, unix_timestamp
-
+# Defining the scheme and types
 schema = StructType([StructField("ind",IntegerType(),True),
                      StructField("timestamp",TimestampType(),True),
                      StructField("latitude",FloatType(),True),
@@ -35,6 +35,7 @@ schema = StructType([StructField("ind",IntegerType(),True),
                      StructField("country",StringType(),True)
   ])
 
+# transforming the data
 json_geo = kinesisGeo.select(from_json("data", schema).alias("json"))
 countries = (json_geo.select(col("json.ind").alias("ind"),
                           col("json.timestamp").alias("timestamp"),
@@ -43,6 +44,8 @@ countries = (json_geo.select(col("json.ind").alias("ind"),
                           col("json.country").alias("country")
                           ))
 #display(countries)  
+
+# Cleaning the data
 countries = countries.withColumn("coordinates", array("latitude", "longitude"))
 countries = countries.drop("latitude", "longitude")
 column_order = ["ind","country","coordinates","timestamp"]
@@ -52,10 +55,10 @@ countries.writeStream.format("delta").outputMode("append").option("checkpointLoc
 
 
 
-
+# Reading in the posts stream data
 kinesisPin = spark.readStream.format("kinesis").option("streamName", "streaming-12cc24ac7551-pin").option("region", 'us-east-1').option("initialPosition", '{"at_timestamp": "2023/06/12 15:18:00 GMT", "format": "yyyy/MM/dd HH:mm:ss ZZZ"}').option("awsAccessKey", ACCESS_KEY).option("awsSecretKey", SECRET_KEY).load()
-#display(kinesisPin)
 
+# Defining the scheme and types
 kinesisPin = kinesisPin.withColumn('data', kinesisPin['data'].cast(StringType()))
 schema = StructType([StructField("index",IntegerType(),True),
                      StructField("unique_id",StringType(),True),
@@ -70,7 +73,7 @@ schema = StructType([StructField("index",IntegerType(),True),
                      StructField("save_location",StringType(),True),
                      StructField("category",StringType(),True)
   ])
-
+# transforming the data
 json_pin = kinesisPin.select(from_json("data", schema).alias("json"))
 posts = (json_pin.select(col("json.index").alias("ind"),
                           col("json.unique_id").alias("unique_id"),
@@ -87,7 +90,8 @@ posts = (json_pin.select(col("json.index").alias("ind"),
                           ))
 
 # display(posts)  
-from pyspark.sql.functions import when
+
+# Cleaning the post data
 posts = posts.withColumn('description', when((col('description')=='No description available Story format') | (col('description')==''), None).otherwise(col('description')))
 posts = posts.withColumn('follower_count', when((col('follower_count')=='User Info Error') | (col('follower_count')==''), None).otherwise(col('follower_count')))
 posts = posts.withColumn('image_src', when((col('image_src')=='Image src error.') | (col('image_src')==''), None).otherwise(col('image_src')))
@@ -106,16 +110,10 @@ def standardise_follower_count(follower_count):
     # print(follower_count)
     return follower_count
 
-from pyspark.sql.functions import udf
 convertFC = udf(lambda z: standardise_follower_count(z))
 posts = posts.withColumn('follower_count', convertFC(col('follower_count')))
 posts = posts.withColumn('follower_count', posts['follower_count'].cast(IntegerType()))
-# posts = posts.withColumn('ind', posts['ind'].cast(IntegerType()))
-# posts = posts.withColumn('downloaded', posts['downloaded'].cast(IntegerType()))
-
-from pyspark.sql.functions import regexp_replace
 posts = posts.withColumn('save_location', regexp_replace(col('save_location'), 'Local save in ', ''))
-
 column_order = ["ind","unique_id","title","description","follower_count","poster_name","tag_list","is_image_or_video","image_src","save_location","category",]
 posts = posts.select(*column_order)
 # display(posts)
@@ -125,9 +123,11 @@ posts.writeStream.format("delta").outputMode("append").option("checkpointLocatio
 
 
 
-kinesisUser = spark.readStream.format("kinesis").option("streamName", "streaming-12cc24ac7551-user").option("region", 'us-east-1').option("initialPosition", '{"at_timestamp": "2023/06/12 15:18:00 GMT", "format": "yyyy/MM/dd HH:mm:ss ZZZ"}').option("awsAccessKey", ACCESS_KEY).option("awsSecretKey", SECRET_KEY).load()
-#display(kinesisUser)
 
+# Reading in the users stream data
+kinesisUser = spark.readStream.format("kinesis").option("streamName", "streaming-12cc24ac7551-user").option("region", 'us-east-1').option("initialPosition", '{"at_timestamp": "2023/06/12 15:18:00 GMT", "format": "yyyy/MM/dd HH:mm:ss ZZZ"}').option("awsAccessKey", ACCESS_KEY).option("awsSecretKey", SECRET_KEY).load()
+
+# Transforming user data
 kinesisUser = kinesisUser.withColumn('data', kinesisUser['data'].cast(StringType()))
 schema = StructType([StructField("ind",IntegerType(),True),
                      StructField("first_name",StringType(),True),
@@ -135,15 +135,13 @@ schema = StructType([StructField("ind",IntegerType(),True),
                      StructField("age",IntegerType(),True),
                      StructField("date_joined",TimestampType(),True)
   ])
-
 json_user = kinesisUser.select(from_json("data", schema).alias("json"))
 users = (json_user.select(col("json.ind").alias("ind"),
                           col("json.first_name").alias("first_name"),
                           col("json.last_name").alias("last_name"),
                           col("json.age").alias("age"),
                           col("json.date_joined").alias("date_joined")
-                          ))
-# display(users)  
+                          ))  
 
 # Create a new column 'user_name' that concatenates the information found in the 'first_name' and 'last_name' columns
 users = users.withColumn("user_name", concat_ws(" ", "first_name", "last_name"))

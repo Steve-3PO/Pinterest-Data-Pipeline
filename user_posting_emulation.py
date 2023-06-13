@@ -56,11 +56,11 @@ def run_infinite_post_data_loop():
             for row in user_selected_row:
                 user_result = dict(row._mapping)
             
-            print(pin_result)
+            # print(pin_result)
             # print(geo_result)
             # print(user_result)
             
-            # 12cc24ac7551.pin
+            # Sending post data to the API
             invoke_url = "https://gw5okk6hgh.execute-api.us-east-1.amazonaws.com/test/topics/12cc24ac7551.pin"
             payload = json.dumps({
                 "records": [
@@ -76,9 +76,11 @@ def run_infinite_post_data_loop():
             })
             headers = {'Content-Type': 'application/vnd.kafka.json.v2+json'}
             response = requests.request("POST", invoke_url, headers=headers, data=payload)
-            print(response.status_code)
+            # print(response.status_code)
             
-            # 12cc24ac7551.geo
+            
+            
+            # Sending geolocation data to the API
             invoke_url = "https://gw5okk6hgh.execute-api.us-east-1.amazonaws.com/test/topics/12cc24ac7551.geo"
             payload = json.dumps({
                 "records": [
@@ -91,9 +93,12 @@ def run_infinite_post_data_loop():
             }, default=str)
             headers = {'Content-Type': 'application/vnd.kafka.json.v2+json'}
             response = requests.request("POST", invoke_url, headers=headers, data=payload)
-            print(response.status_code)
+            # print(response.status_code)
             
-            # 12cc24ac7551.user
+            
+            
+            
+            # Sending user data to the API
             invoke_url = "https://gw5okk6hgh.execute-api.us-east-1.amazonaws.com/test/topics/12cc24ac7551.user"
             payload = json.dumps({
                 "records": [
@@ -106,7 +111,7 @@ def run_infinite_post_data_loop():
             }, default=str)
             headers = {'Content-Type': 'application/vnd.kafka.json.v2+json'}
             response = requests.request("POST", invoke_url, headers=headers, data=payload)
-            print(response.status_code)
+            # print(response.status_code)
             
             
 
