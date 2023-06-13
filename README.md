@@ -14,32 +14,35 @@
 ## Project Structure
 
 ### Milestone 1 - "Batch Processing: Configure the EC2 Kafka client."
-> - 
-> - 
+> - Create .pem key file and connect to EC2 Instance
+> - Set up Kafka and topics from EC2 instance
 
 ### Milestone 2 - "Batch Processing: Connect a MSK cluster to a S3 Bucket."
-> - 
-> - 
+> - Create a custom plugin, MSK Connect
+> - Create a connector, MSK Connect
 
 ### Milestone 3 - "Batch Processing: Configuring an API in API Gateway."
-> - 
-> - 
+> - Build a Kafka REST proxy intergration method for the API
+> - Set up Kafka REST proxy on EC2 instance
+> - Send data to the API
 
 ### Milestone 4 - "Batch Processing: Databricks."
-> - 
-> - 
+> - Set up Databricks
+> - Mount an S3 bucket
 
 ### Milestone 5 - "Batch Processing: Spark on Databricks."
-> - 
-> - 
+> - Clean the Dataframes
+> - Querying the Dataframes with SQL and Pyspark
 
 ### Milestone 6 - "Batch Processing: AWS MWAA."
-> - 
-> - 
+> - Create and upload DAG to MWAA
+> - Trigger DAG
 
 ### Milestone 7 - "Stream Processing: AWS Kinesis."
-> - 
-> - 
+> - Create Data Stream with Kinesis
+> - Configure an API with Kinesis Proxy Integration
+> - Send data to Kinesis and read to Databricks
+> - Transform Kinesis stream in Databricks and Write to Delta Tables
 
 
 ## M1 - Batch Processing: Configure the EC2 Kafka client.
