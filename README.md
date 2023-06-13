@@ -45,7 +45,7 @@
 > - Transform Kinesis stream in Databricks and Write to Delta Tables
 
 
-## M1 - Batch Processing: Configure the EC2 Kafka client.
+<!-- ## M1 - Batch Processing: Configure the EC2 Kafka client.
 
 ### Creating .pem file
 
@@ -123,4 +123,4 @@
 
 ### Transform Kinesis streams in Databricks
 
-### Writing the streaming data to Delta Tables
+### Writing the streaming data to Delta Tables -->
