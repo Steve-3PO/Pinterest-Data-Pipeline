@@ -24,6 +24,15 @@
 > - AWS Managed Workflows for Apache Airflow (MWAA): Fully managed service for Apache Airflow, simplifying the deployment and management of workflows.
 > - AWS Kinesis: Managed service for real-time data streaming and processing.
 
+## Project Highlights
+> - Developed a robust data processing pipeline capable of handling Pinterest's experimental data requirements.
+> - Implemented a Lambda architecture, combining batch processing and stream processing methods for efficient data analysis.
+> - Leveraged Kafka and MSK to handle scalable and fault-tolerant data streaming.
+> - Utilized Spark and Spark Structured Streaming for real-time data processing and analytics.
+> - Integrated various data sources and sinks using MSK Connect for seamless data integration.
+> - Ensured data storage and retrieval using AWS S3.
+> - Orchestrated and scheduled workflows using Airflow and MWAA for efficient pipeline management.
+
 ## Project Structure
 
 ### Milestone 1 - "Batch Processing: Configure the EC2 Kafka client."
