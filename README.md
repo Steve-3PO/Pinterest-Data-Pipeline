@@ -11,6 +11,19 @@
 > - To process Batch and Stream data.
 > - To conduct cleaning and analysis on the processed data.
 
+## Technologies Used
+> - Kafka: Used as a scalable and fault-tolerant messaging system for data streaming.
+> - AWS Managed Streaming for Apache Kafka (MSK): Managed service for Apache Kafka, providing easy setup, monitoring, and scaling capabilities.
+> - MSK Connect: Enables seamless data integration between Apache Kafka and other data sources and sinks.
+> - AWS API Gateway: Used to create, publish, and manage APIs, allowing seamless interaction with the pipeline.
+> - AWS S3: Scalable object storage used for data storage and retrieval.
+> - Spark: Fast and distributed processing engine used for data transformations and analytics.
+> - Spark Structured Streaming: Enables real-time processing and analysis of streaming data.
+> - Databricks: Cloud-based platform for collaborative data engineering and analytics.
+> - Airflow: Open-source platform for orchestrating and scheduling workflows.
+> - AWS Managed Workflows for Apache Airflow (MWAA): Fully managed service for Apache Airflow, simplifying the deployment and management of workflows.
+> - AWS Kinesis: Managed service for real-time data streaming and processing.
+
 ## Project Structure
 
 ### Milestone 1 - "Batch Processing: Configure the EC2 Kafka client."
